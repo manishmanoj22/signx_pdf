@@ -1,0 +1,7 @@
+{
+  "name": "SignX PDF",
+  "description": "A mobile-first digital signature platform. Easily sign PDFs, create convert and merge PDFs, and share documents securely.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

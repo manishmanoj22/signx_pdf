@@ -1,0 +1,54 @@
+
+{
+  "name": "SignX PDF - Sign & Receipts",
+  "short_name": "SignX",
+  "description": "Professional digital signatures, HRA rent receipts, and PDF tools in one secure app.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "orientation": "portrait",
+  "categories": ["productivity", "business", "utilities"],
+  "screenshots": [
+    {
+      "src": "https://picsum.photos/seed/signx1/1080/1920",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Sign documents on the go"
+    },
+    {
+      "src": "https://picsum.photos/seed/signx2/1920/1080",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Manage all your PDF tools"
+    }
+  ],
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1160/1160040.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1160/1160040.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Signature",
+      "url": "/?action=sign",
+      "icons": [{ "src": "https://cdn-icons-png.flaticon.com/512/1160/1160040.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Create Receipt",
+      "url": "/?action=receipt",
+      "icons": [{ "src": "https://cdn-icons-png.flaticon.com/512/1160/1160040.png", "sizes": "192x192" }]
+    }
+  ]
+}
