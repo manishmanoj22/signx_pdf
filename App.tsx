@@ -8,7 +8,6 @@ import RentReceiptCreator from './components/RentReceiptCreator';
 import ImageToPdfConverter from './components/ImageToPdfConverter';
 import PdfMerger from './components/PdfMerger';
 import PdfCompressor from './components/PdfCompressor';
-import BannerAd from './components/BannerAd';
 import * as db from './db';
 
 declare const jspdf: any;
@@ -20,24 +19,39 @@ if (typeof window !== 'undefined' && pdfjsLib) {
 
 const AppLogo = ({ className }: { className?: string }) => (
   <div className={`relative flex items-center justify-center ${className}`}>
-    <svg viewBox="0 0 100 100" className="w-full h-full">
-      <defs>
-        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#14b8a6" />
-          <stop offset="100%" stopColor="#2563eb" />
-        </linearGradient>
-      </defs>
-      <rect x="25" y="15" width="50" height="70" rx="10" fill="url(#logoGrad)" />
-      <path d="M75 15 L65 15 L75 25 Z" fill="rgba(255,255,255,0.3)" />
+    <svg 
+      viewBox="0 0 100 100" 
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-full h-full drop-shadow-md"
+    >
+      {/* Background rounded square */}
+      <rect x="0" y="0" width="100" height="100" rx="22" fill="#2563eb" />
+      
+      {/* Document */}
+      <rect x="25" y="20" width="50" height="65" rx="4" fill="#ffffff" />
+      
+      {/* Document lines */}
+      <rect x="32" y="38" width="36" height="2.5" rx="1" fill="#e2e8f0" />
+      <rect x="32" y="46" width="36" height="2.5" rx="1" fill="#e2e8f0" />
+      <rect x="32" y="54" width="36" height="2.5" rx="1" fill="#e2e8f0" />
+      
+      {/* Signature line (green) */}
+      <rect x="32" y="68" width="28" height="3.5" rx="1.5" fill="#10b981" />
+      
+      {/* Signature squiggle */}
       <path 
-        d="M30 45 L45 60 L80 25" 
+        d="M36 78 C 40 72, 45 72, 50 78 S 60 84, 65 78" 
         fill="none" 
-        stroke="white" 
-        strokeWidth="10" 
+        stroke="#10b981" 
+        strokeWidth="2.5" 
         strokeLinecap="round" 
-        strokeLinejoin="round"
-        className="drop-shadow-sm"
       />
+      
+      {/* Pen */}
+      <g transform="translate(72, 65) rotate(-45)">
+        <rect x="0" y="0" width="5" height="28" rx="2.5" fill="#059669" />
+        <path d="M0 0 L2.5 -6 L5 0 Z" fill="#059669" />
+      </g>
     </svg>
   </div>
 );
@@ -470,24 +484,36 @@ const App: React.FC = () => {
     }
   };
 
-  const handleShare = async (docToShare?: DocumentRecord, isRequest: boolean = false) => {
+  const handleShare = async (docToShare?: DocumentRecord, isRequest: boolean = false, customData?: { dataUrl: string, name: string }) => {
     const targetDoc = docToShare || activeDoc;
-    if (!targetDoc) return;
+    if (!targetDoc && !customData) return;
     setIsLoading(true);
     
     try {
-      const blob = await generateProcessedBlob(targetDoc);
+      let blob: Blob | null = null;
+      let fileName = "";
+
+      if (customData) {
+        // Handle direct dataUrl sharing (from tools)
+        const response = await fetch(customData.dataUrl);
+        blob = await response.blob();
+        fileName = customData.name.endsWith('.pdf') ? customData.name : `${customData.name}.pdf`;
+      } else if (targetDoc) {
+        // Handle document record sharing
+        blob = await generateProcessedBlob(targetDoc);
+        fileName = targetDoc.name.endsWith('.pdf') ? targetDoc.name : `${targetDoc.name}.pdf`;
+      }
+
       if (!blob) throw new Error("Could not generate file");
       
-      const fileName = targetDoc.name.endsWith('.pdf') ? targetDoc.name : `${targetDoc.name}.pdf`;
       const file = new File([blob], fileName, { type: 'application/pdf' });
       
       const shareData: any = {
         files: [file],
-        title: targetDoc.name,
+        title: customData?.name || targetDoc?.name || "Document",
         text: isRequest 
-          ? `Hello! I have sent a document for you: ${targetDoc.name}.`
-          : `Hi, here is the signed document: ${targetDoc.name}.`
+          ? `Hello! I have sent a document for you: ${customData?.name || targetDoc?.name}.`
+          : `Hi, here is the signed document: ${customData?.name || targetDoc?.name}.`
       };
 
       // Try native share first
@@ -518,11 +544,15 @@ const App: React.FC = () => {
       console.error("Sharing failed:", err);
       // If sharing fails, try to at least download
       try {
-        const blob = await generateProcessedBlob(targetDoc);
-        if (blob) {
-          const url = URL.createObjectURL(blob);
-          downloadDataUrl(url, targetDoc.name);
-          setTimeout(() => URL.revokeObjectURL(url), 1000);
+        if (customData) {
+          downloadDataUrl(customData.dataUrl, customData.name);
+        } else if (targetDoc) {
+          const blob = await generateProcessedBlob(targetDoc);
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            downloadDataUrl(url, targetDoc.name);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+          }
         }
       } catch (innerErr) {
         alert("Sharing and download failed. Please check app permissions.");
@@ -576,6 +606,7 @@ const App: React.FC = () => {
             <p className="text-gray-500 font-medium mb-10">Document processed and saved locally.</p>
             <div className="space-y-3">
               <button onClick={() => toolResultData && downloadDataUrl(toolResultData.dataUrl, toolResultData.name)} className="w-full bg-gradient-to-r from-[#14b8a6] to-[#2563eb] text-white font-black py-5 rounded-2xl shadow-xl shadow-blue-100 active:scale-95 transition-all">Download PDF</button>
+              <button onClick={() => toolResultData && handleShare(undefined, false, { dataUrl: toolResultData.dataUrl, name: toolResultData.name })} className="w-full bg-slate-900 text-white font-black py-5 rounded-2xl active:scale-95 transition-all shadow-xl shadow-slate-200">Attach & Share PDF</button>
               <div className="flex gap-2">
                 <button onClick={proceedToSignFromTool} className="flex-1 bg-slate-800 text-white font-black py-5 rounded-2xl active:scale-95 transition-all shadow-lg text-xs">Add Signature</button>
                 {toolResultData?.sourceTool !== AppView.COMPRESS_PDF && (
@@ -588,16 +619,13 @@ const App: React.FC = () => {
         ) : (
           <>
             {currentView === AppView.DASHBOARD && (
-              <div className="flex flex-col min-h-full">
-                <Dashboard 
-                  documents={documents} 
-                  onAction={(view) => setCurrentView(view)} 
-                  onViewDoc={(doc) => { resetSigningState(); setActiveDoc(doc); setPlacedElements(doc.placedSignatures || []); setCurrentView(AppView.SIGN_DOC); }} 
-                  onDeleteDoc={handleDeleteDoc}
-                  onDownloadDoc={processAndDownloadDoc}
-                />
-                <BannerAd />
-              </div>
+              <Dashboard 
+                documents={documents} 
+                onAction={(view) => setCurrentView(view)} 
+                onViewDoc={(doc) => { resetSigningState(); setActiveDoc(doc); setPlacedElements(doc.placedSignatures || []); setCurrentView(AppView.SIGN_DOC); }} 
+                onDeleteDoc={handleDeleteDoc}
+                onDownloadDoc={processAndDownloadDoc}
+              />
             )}
 
             {currentView === AppView.CREATE_RECEIPT && (

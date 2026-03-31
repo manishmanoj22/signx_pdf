@@ -7,23 +7,39 @@ interface ProfileMenuProps {
 
 const AppLogo = ({ className }: { className?: string }) => (
   <div className={`relative flex items-center justify-center ${className}`}>
-    <svg viewBox="0 0 100 100" className="w-full h-full">
-      <defs>
-        <linearGradient id="logoGradProfile" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#14b8a6" />
-          <stop offset="100%" stopColor="#2563eb" />
-        </linearGradient>
-      </defs>
-      <rect x="25" y="15" width="50" height="70" rx="10" fill="url(#logoGradProfile)" />
-      <path d="M75 15 L65 15 L75 25 Z" fill="rgba(255,255,255,0.3)" />
+    <svg 
+      viewBox="0 0 100 100" 
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-full h-full drop-shadow-md"
+    >
+      {/* Background rounded square */}
+      <rect x="0" y="0" width="100" height="100" rx="22" fill="#2563eb" />
+      
+      {/* Document */}
+      <rect x="25" y="20" width="50" height="65" rx="4" fill="#ffffff" />
+      
+      {/* Document lines */}
+      <rect x="32" y="38" width="36" height="2.5" rx="1" fill="#e2e8f0" />
+      <rect x="32" y="46" width="36" height="2.5" rx="1" fill="#e2e8f0" />
+      <rect x="32" y="54" width="36" height="2.5" rx="1" fill="#e2e8f0" />
+      
+      {/* Signature line (green) */}
+      <rect x="32" y="68" width="28" height="3.5" rx="1.5" fill="#10b981" />
+      
+      {/* Signature squiggle */}
       <path 
-        d="M30 45 L45 60 L80 25" 
+        d="M36 78 C 40 72, 45 72, 50 78 S 60 84, 65 78" 
         fill="none" 
-        stroke="white" 
-        strokeWidth="10" 
+        stroke="#10b981" 
+        strokeWidth="2.5" 
         strokeLinecap="round" 
-        strokeLinejoin="round"
       />
+      
+      {/* Pen */}
+      <g transform="translate(72, 65) rotate(-45)">
+        <rect x="0" y="0" width="5" height="28" rx="2.5" fill="#059669" />
+        <path d="M0 0 L2.5 -6 L5 0 Z" fill="#059669" />
+      </g>
     </svg>
   </div>
 );

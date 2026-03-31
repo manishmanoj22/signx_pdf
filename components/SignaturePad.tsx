@@ -1,5 +1,6 @@
 
 import React, { useRef, useState, useEffect } from 'react';
+import { X, Camera, PenTool, Upload } from 'lucide-react';
 
 interface SignaturePadProps {
   onSave: (dataUrl: string) => void;
@@ -88,12 +89,20 @@ const SignaturePad: React.FC<SignaturePadProps> = ({ onSave, onCancel }) => {
       <div className="w-full max-w-lg rounded-[2.5rem] bg-white p-8 shadow-2xl animate-in zoom-in-95">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-xl font-black text-gray-900 tracking-tight">Add Signature</h3>
-          <button onClick={onCancel} className="p-2 bg-slate-100 rounded-full text-slate-400">✕</button>
+          <button onClick={onCancel} className="p-2 bg-slate-100 rounded-full text-slate-400 hover:text-red-500 transition-colors">
+            <X size={20} />
+          </button>
         </div>
 
         <div className="flex bg-slate-100 p-1 rounded-2xl mb-6">
-          <button onClick={() => setMode('DRAW')} className={`flex-1 py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-all ${mode === 'DRAW' ? 'bg-white text-[#2563eb] shadow-sm' : 'text-slate-400'}`}>Draw</button>
-          <button onClick={() => setMode('UPLOAD')} className={`flex-1 py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-all ${mode === 'UPLOAD' ? 'bg-white text-[#2563eb] shadow-sm' : 'text-slate-400'}`}>Upload</button>
+          <button onClick={() => setMode('DRAW')} className={`flex-1 py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${mode === 'DRAW' ? 'bg-white text-[#2563eb] shadow-sm' : 'text-slate-400'}`}>
+            <PenTool size={14} />
+            Draw
+          </button>
+          <button onClick={() => setMode('UPLOAD')} className={`flex-1 py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${mode === 'UPLOAD' ? 'bg-white text-[#2563eb] shadow-sm' : 'text-slate-400'}`}>
+            <Upload size={14} />
+            Upload
+          </button>
         </div>
 
         {mode === 'DRAW' ? (
@@ -118,7 +127,9 @@ const SignaturePad: React.FC<SignaturePadProps> = ({ onSave, onCancel }) => {
           </>
         ) : (
           <div className="text-center py-10 px-6 border-4 border-dashed border-slate-100 rounded-3xl bg-slate-50">
-            <div className="text-5xl mb-6">📸</div>
+            <div className="text-slate-300 flex justify-center mb-6">
+              <Camera size={48} strokeWidth={1.5} />
+            </div>
             <p className="text-sm text-slate-500 font-medium mb-8">Take a photo of your physical signature on white paper.</p>
             <input ref={fileInputRef} type="file" className="hidden" accept="image/*" onChange={handleFileUpload} />
             <button onClick={() => fileInputRef.current?.click()} className="bg-white text-[#2563eb] border border-blue-100 px-8 py-4 rounded-2xl font-black shadow-sm active:scale-95 transition-all">Select Image</button>

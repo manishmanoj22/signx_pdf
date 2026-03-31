@@ -4,6 +4,7 @@ const ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
+  '/icon.png',
   'https://cdn.tailwindcss.com',
   'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',

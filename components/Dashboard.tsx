@@ -1,6 +1,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { DocumentRecord, AppView } from '../types';
+import BannerAd from './BannerAd';
 
 interface DashboardProps {
   documents: DocumentRecord[];
@@ -57,7 +58,7 @@ const Dashboard: React.FC<DashboardProps> = ({ documents, onAction, onViewDoc, o
       <div className="bg-gradient-to-br from-[#14b8a6] to-[#2563eb] p-10 rounded-[3rem] text-white shadow-2xl shadow-blue-100 relative overflow-hidden group">
         <div className="relative z-10">
           <p className="text-blue-100 text-[10px] font-black uppercase tracking-[0.2em] mb-2 opacity-80">Workspace Dashboard</p>
-          <h2 className="text-2xl sm:text-4xl font-black mb-8 leading-tight tracking-tight whitespace-normal overflow-hidden">Your Complete Document Studio.</h2>
+          <h2 className="text-xl sm:text-4xl font-black mb-8 leading-tight tracking-tight whitespace-normal overflow-hidden max-w-full">Your Complete Document Studio.</h2>
           <div className="flex gap-4 items-center">
              <div className="bg-white/10 backdrop-blur-xl px-6 py-3 rounded-2xl border border-white/20 shadow-inner flex flex-col items-center min-w-[80px]">
                 <span className="block text-3xl font-black leading-none mb-1">{documents.length}</span>
@@ -99,6 +100,8 @@ const Dashboard: React.FC<DashboardProps> = ({ documents, onAction, onViewDoc, o
         </div>
       </div>
 
+      <BannerAd />
+
       <div className="flex items-center justify-between px-2">
          <h3 className="text-lg font-black text-slate-800 tracking-tight">Recent Activity</h3>
          <div className="flex bg-slate-100 p-1.5 rounded-2xl shadow-inner border border-slate-200/50">
@@ -127,10 +130,7 @@ const Dashboard: React.FC<DashboardProps> = ({ documents, onAction, onViewDoc, o
               </div>
             </div>
             <div className="flex items-center gap-2 sm:gap-3 ml-4">
-              <button onClick={(e) => handleDownload(e, doc)} className="w-10 h-10 bg-blue-50 text-[#2563eb] hover:bg-blue-100 rounded-xl transition-all border border-blue-100 flex items-center justify-center">
-                📥
-              </button>
-              <button onClick={(e) => confirmDelete(e, doc.id)} className="w-10 h-10 bg-slate-50 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all border border-transparent hover:border-red-100 flex items-center justify-center">
+              <button onClick={(e) => confirmDelete(e, doc.id)} className="w-12 h-12 bg-slate-50 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all border border-transparent hover:border-red-100 flex items-center justify-center">
                 🗑️
               </button>
             </div>
