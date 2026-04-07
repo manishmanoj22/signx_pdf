@@ -60,7 +60,7 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ onClose }) => {
         </div>
         
         <p className="text-sm text-slate-600 leading-relaxed font-medium mt-6 text-center">
-          SignX PDF is a premium digital signature solution. Replace paper-based workflows with secure, local digital alternatives.
+          SignX PDF is a privacy-first PDF toolkit for Android that lets you handle all your PDF needs without ever uploading a single document to the cloud.
         </p>
         <div className="bg-slate-50 p-6 rounded-[2rem] border border-slate-100 flex items-center justify-center">
           <p className="text-xs font-bold text-[#1e3a8a] flex items-center gap-2">
@@ -84,6 +84,17 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ onClose }) => {
           <div className="flex gap-3">
             <div className="w-6 h-6 bg-emerald-100 text-[#14b8a6] rounded-lg flex items-center justify-center text-xs flex-shrink-0">✓</div>
             <p className="text-xs text-slate-600 font-medium">We do not track your activity or document content.</p>
+          </div>
+
+          <div className="pt-4">
+            <a
+              href="https://mprptech.com/signx-pdf/privacy-policy/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full py-4 bg-slate-900 text-white text-center font-black rounded-xl text-xs uppercase tracking-widest active:scale-95 transition-all shadow-lg shadow-slate-200"
+            >
+              Read Full Privacy Policy
+            </a>
           </div>
         </div>
       </div>

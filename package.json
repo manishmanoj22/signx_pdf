@@ -13,9 +13,12 @@
     "cap:assets": "npx capacitor-assets generate"
   },
   "dependencies": {
+    "@capacitor-community/admob": "^6.2.0",
     "@capacitor/android": "^8.3.0",
     "@capacitor/cli": "^8.3.0",
     "@capacitor/core": "^8.3.0",
+    "@capacitor/filesystem": "^8.1.2",
+    "@capacitor/share": "^8.0.1",
     "@google/genai": "^1.41.0",
     "lucide-react": "^1.7.0",
     "motion": "^12.38.0",
